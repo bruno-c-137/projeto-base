@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useLayout } from "@/context/UseLayout";
+import { useLayout } from "@/context/LayoutProvider";
 
 export default function LoginPage() {
   const navigate = useNavigate();

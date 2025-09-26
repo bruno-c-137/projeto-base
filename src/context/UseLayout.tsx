@@ -1,64 +1,61 @@
-import {
-    useContext,
-    createContext,
-    useState,
-    Suspense,
-} from 'react';
-import { Outlet } from 'react-router-dom';
-import LoadingComponent from '@/components/Loading/Loading';
+import { useState } from "react";
 
-interface LayoutProps {
+export interface LayoutProps {
     token?: string;
     user?: any;
     fullLoading: boolean;
+    cardState: CardStateProps;
     setToken: (value: string) => void;
     setUser: (user: any) => void;
     setFullLoading: (value: boolean) => void;
     login: (token: string) => void;
     logout: () => void;
+    setCardState: (value: any) => void;
+}
+interface CardStateProps {
+    step: number;
+    documentId: string;
+    userDocumentId: string;
 }
 
-const layoutContext = createContext({} as LayoutProps);
-
-export const useLayout = (): LayoutProps => {
-    return useContext(layoutContext);
-};
-
-function useProvideLayout(): LayoutProps {
+export const useLayoutState = (): LayoutProps => {
     const [fullLoading, setFullLoading] = useState(false);
-    const [token, setToken] = useState<string | undefined>(window?.localStorage?.getItem('token') || '');
+    const [token, setToken] = useState<string | undefined>(
+        typeof window !== "undefined"
+            ? window.localStorage?.getItem("token") || undefined
+            : undefined
+    );
     const [user, setUser] = useState();
+    const [cardState, setCardState] = useState<CardStateProps>({
+        step: 0,
+        documentId: "",
+        userDocumentId: "",
+    });
 
-    function login(token: string) {
-        window?.localStorage?.setItem('token', token);
+    const login = (token: string) => {
+        if (typeof window !== "undefined") {
+            window.localStorage?.setItem("token", token);
+        }
         setToken(token);
-    }
+    };
 
-    function logout() {
-        window?.localStorage?.removeItem('token');
+    const logout = () => {
+        if (typeof window !== "undefined") {
+            window.localStorage?.removeItem("token");
+        }
         setToken(undefined);
-    }
+    };
 
     return {
         token,
         user,
         fullLoading,
+        cardState,
         setToken,
         setUser,
         setFullLoading,
         login,
-        logout
-    }
-}
-const ProvideLayout: any = () => {
-    const layout: LayoutProps = useProvideLayout();
-    return (
-        <layoutContext.Provider value={layout}>
-            <Suspense fallback={<LoadingComponent />}>
-                <Outlet />
-            </Suspense>
-        </layoutContext.Provider>
-    );
+        logout,
+        setCardState,
+    };
 };
-
-export default ProvideLayout;

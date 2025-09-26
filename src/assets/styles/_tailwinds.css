@@ -18,5 +18,5 @@
 }
 
 #root {
-  @apply flex flex-col min-h-screen;
+  @apply flex flex-col min-h-dvh;
 }

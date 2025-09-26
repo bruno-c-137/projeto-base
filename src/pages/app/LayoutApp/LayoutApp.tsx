@@ -1,19 +1,19 @@
 import { Outlet } from "react-router-dom";
 import { Suspense, lazy } from "react";
-const HeaderSigned = lazy(() => import("@/components/HeaderSigned/HeaderSigned"));
-const FooterSigned = lazy(() => import("@/components/FooterSigned/FooterSigned"));
+const HeaderApp = lazy(() => import("@/components/HeaderApp/HeaderApp"));
+const FooterApp = lazy(() => import("@/components/FooterApp/FooterApp"));
 const LoadingComponent = lazy(() => import("@/components/Loading/Loading"));
 
-export default function LayoutSigned() {
+export default function LayoutAFooterApp() {
     return (
         <>
-            <HeaderSigned />
+            <HeaderApp />
             <main className="flex flex-col flex-1">
                 <Suspense fallback={<LoadingComponent />}>
                     <Outlet />
                 </Suspense>
             </main>
-            <FooterSigned />
+            <FooterApp />
         </>
     )
 }

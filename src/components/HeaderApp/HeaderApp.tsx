@@ -1,4 +1,4 @@
-export default function HeaderSigned() {
+export default function HeaderApp() {
   return (
     <header className="bg-amarelo-1 text-white">
       <div className="container">
